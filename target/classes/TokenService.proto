@@ -1,0 +1,52 @@
+syntax = "proto3";
+package com.gt.grpc;
+
+import "RingService.proto";
+import "GrpcServerResponse.proto";
+
+/*
+Protocol buffer messages and grpc interface to manage the token
+ */
+
+/*
+Protocol buffer format for a measurement
+ */
+message MeasurementProto{
+  int32 id = 1;
+  string type = 2;
+  double value = 3;
+  int64 timestamp = 4;
+}
+
+/*
+Token message
+ */
+message Token{
+  /*
+  Control bit to switch when the token is emptied. Subsequent receivers will know that a new round
+  of measurements started
+   */
+  bool round = 1;
+  /*
+  Every time that a node receives the token with the round bit switched, increments this counter to let
+  the other know that it participates to the measurement too.
+   */
+  int32 participants = 2;
+  /*
+  List of measurements
+   */
+  repeated MeasurementProto measurements = 3;
+  /*
+  Flag that indicates the exit token
+   */
+  bool exit=4;
+  /*
+  If the token is an exit token, this field contains the identity of the
+   */
+  Update update=5;
+
+}
+
+service TokenService{
+  rpc tokenPass(Token) returns (GrpcServerResponse) {};
+}

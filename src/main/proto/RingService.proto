@@ -1,0 +1,29 @@
+syntax = "proto3";
+package com.gt.grpc;
+
+/*
+Protocol buffer messages and grpc interface to manage the dynamic topology
+ */
+
+message NodeProto{
+  int32 id = 1;
+  string ip = 2;
+  int32  port = 3;
+}
+
+message RingServiceResponse{
+  int32 status=1;
+  NodeProto neighbor=2;
+}
+
+message Update{
+  NodeProto sender=1;
+  NodeProto update=2;
+}
+
+service RingService{
+  rpc enterNext(Update) returns (RingServiceResponse){};
+  rpc enterPrev(Update) returns (RingServiceResponse){};
+  rpc quitNext(Update) returns (RingServiceResponse){};
+  rpc quitPrev(Update) returns (RingServiceResponse){};
+}

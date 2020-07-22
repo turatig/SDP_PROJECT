@@ -1,0 +1,10 @@
+syntax = "proto3";
+package com.gt.grpc;
+
+/*
+Response message returned by server rpc
+ */
+message GrpcServerResponse{
+  int32 status = 1;
+  string contents = 2;
+}
